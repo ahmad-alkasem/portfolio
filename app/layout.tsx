@@ -4,6 +4,7 @@ import { Inter, Cairo } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider } from "@/components/language-provider"
+import { Toaster } from "@/components/toaster"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     "Telegram Bot Developer",
     "Software Engineer",
   ],
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
@@ -47,6 +48,7 @@ export default function RootLayout({
         <LanguageProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
+            <Toaster />
           </ThemeProvider>
         </LanguageProvider>
       </body>

@@ -17,7 +17,7 @@ export function Experience() {
   const experiences = [
     {
       title: "experience.arachnoech.title",
-      company: "Arachnoech",
+      company: "Arachnotech",
       period: "experience.arachnoech.period",
       description: "experience.arachnoech.description",
       skills: ["ASP.NET Core", "MySQL", "Hangfire", "Clean Architecture", "DDD", "RBAC"],
@@ -28,6 +28,7 @@ export function Experience() {
       period: "experience.ulutech.period",
       description: "experience.ulutech.description",
       skills: ["ASP.NET Core", "SQL Server", "SignalR", "JWT", "Swagger"],
+      image: "/images/ulutech-logo.png",
     },
     {
       title: "experience.bluebits.title",

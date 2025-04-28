@@ -141,10 +141,18 @@ export function Hero() {
                 <Mail className="h-5 w-5" />
                 {t("hero.contact")}
               </Button>
-              <Button size="lg" variant="outline" className="gap-2 rounded-full">
-                <ArrowDown className="h-5 w-5" />
-                {t("hero.resume")}
-              </Button>
+
+              <a href="/Ahmad_Alkasem_CV.pdf" download="Ahmad_Alkasem_CV.pdf">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="gap-2 rounded-full"
+                >
+                  <ArrowDown className="h-5 w-5" />
+                  {t("hero.resume")}
+                </Button>
+              </a>
+              
             </motion.div>
 
             <motion.div variants={item} className="flex mt-8 gap-4 flex-wrap">

@@ -19,6 +19,10 @@ const translations = {
     en: "Projects",
     ar: "المشاريع",
   },
+  "nav.gallery": {
+    en: "Gallery",
+    ar: "معرض الصور",
+  },
   "nav.contact": {
     en: "Contact",
     ar: "تواصل",
@@ -219,6 +223,10 @@ const translations = {
     en: "Visit Bot",
     ar: "زيارة البوت",
   },
+  "gallery.title": {
+    en: "Photo Gallery",
+    ar: "معرض الصور",
+  },
   "testimonials.title": {
     en: "Client Testimonials",
     ar: "آراء العملاء",
@@ -284,12 +292,12 @@ const translations = {
     ar: "جاري الإرسال...",
   },
   "contact.form.successMessage": {
-    en: "Your message has been sent successfully!",
-    ar: "تم إرسال رسالتك بنجاح!",
+    en: "Email client opened successfully!",
+    ar: "تم فتح تطبيق البريد الإلكتروني بنجاح!",
   },
   "contact.form.errorMessage": {
-    en: "Failed to send message. Please try the direct email option below.",
-    ar: "فشل إرسال الرسالة. يرجى تجربة خيار البريد الإلكتروني المباشر أدناه.",
+    en: "Failed to open email client. Please try again or use the contact information below.",
+    ar: "فشل فتح تطبيق البريد الإلكتروني. يرجى المحاولة مرة أخرى أو استخدام معلومات الاتصال أدناه.",
   },
   "contact.form.emailServiceError": {
     en: "Email service not initialized. Please try the direct email option.",

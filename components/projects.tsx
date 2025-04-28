@@ -35,7 +35,7 @@ export function Projects() {
     {
       title: "projects.restaurant.title",
       description: "projects.restaurant.description",
-      image: "/placeholder.svg?height=400&width=600",
+      image: "/images/restaurant-system.png",
       technologies: ["ASP.NET Core", "SQL Server", "CQRS", "MediatR", "Clean Architecture"],
     },
   ]

@@ -48,6 +48,7 @@ export function Header() {
     { href: "#experience", label: "nav.experience" },
     { href: "#skills", label: "nav.skills" },
     { href: "#projects", label: "nav.projects" },
+    //{ href: "#gallery", label: "nav.gallery" },
     { href: "#contact", label: "nav.contact" },
   ]
 
@@ -185,13 +186,13 @@ export function Header() {
                 </Button>
                 <Button
                   className="w-full"
-                    onClick={() => {
-                      const contactSection = document.getElementById("contact")
-                      if (contactSection) {
-                        contactSection.scrollIntoView({ behavior: "smooth" })
-                      }
-                      setIsMobileMenuOpen(false)
-                    }}
+                  onClick={() => {
+                    const contactSection = document.getElementById("contact")
+                    if (contactSection) {
+                      contactSection.scrollIntoView({ behavior: "smooth" })
+                    }
+                    setIsMobileMenuOpen(false)
+                  }}
                 >
                   {t("nav.hire")}
                 </Button>

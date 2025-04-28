@@ -6,12 +6,12 @@ import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Github, Linkedin, Mail, Send, Instagram, Phone, CheckCircle, AlertCircle, Copy } from "lucide-react"
+import { Github, Linkedin, Mail, Send, Instagram, Phone, CheckCircle, AlertCircle } from "lucide-react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { useState, type FormEvent, useRef } from "react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { sendContactEmail } from "@/app/actions/email-actions"
+import { Card, CardContent } from "@/components/ui/card"
 
 export function Footer() {
   const { t, language } = useLanguage()
@@ -45,48 +45,38 @@ export function Footer() {
     }))
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setStatus({ type: null, message: "" })
 
     try {
-      // Use the server action to send the email
-      const result = await sendContactEmail(formData)
-
-      if (result.success) {
-        setStatus({
-          type: "success",
-          message: t("contact.form.successMessage") || "Message sent successfully!",
-        })
-        setFormData({ name: "", email: "", message: "" })
-      } else {
-        throw new Error(result.text || "Failed to send message")
-      }
-    } catch (error) {
-      console.error("Error sending email:", error)
-      setStatus({
-        type: "error",
-        message: t("contact.form.errorMessage") || "Failed to send message. Please try the direct email option below.",
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const handleDirectEmail = () => {
-    const subject = `Contact from Portfolio: ${formData.name}`
-    const body = `Name: ${formData.name}
+      const subject = `Contact from Portfolio: ${formData.name}`
+      const body = `Name: ${formData.name}
 Email: ${formData.email}
 
 Message:
 ${formData.message}`
 
-    // Create a temporary link element
-    const mailtoLink = document.createElement("a")
-    mailtoLink.href = `mailto:ahmadalkasem371@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    mailtoLink.target = "_blank"
-    mailtoLink.click()
+      // Create a mailto link
+      const mailtoLink = document.createElement("a")
+      mailtoLink.href = `mailto:ahmadalkasem371@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      mailtoLink.target = "_blank"
+      mailtoLink.click()
+
+      // Reset form and show success message
+      setFormData({ name: "", email: "", message: "" })
+      setStatus({
+        type: "success",
+        message: t("contact.form.successMessage") || "Email client opened successfully!",
+      })
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message: t("contact.form.errorMessage") || "Failed to open email client. Please try again.",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const container = {
@@ -167,15 +157,19 @@ ${formData.message}`
             <h3 className="text-2xl font-bold mb-6">{t("contact.getInTouch")}</h3>
             <p className="text-gray-300 mb-8 max-w-md">{t("contact.description")}</p>
 
-            <div className="flex items-center mb-4">
-              <Mail className="h-5 w-5 mr-3 text-primary" />
-              <span>ahmadalkasem371@gmail.com</span>
-            </div>
+            <Card className="bg-gray-800 border-gray-700 mb-6">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <Mail className="h-5 w-5 mr-3 text-primary" />
+                  <span className="font-medium">ahmadalkasem371@gmail.com</span>
+                </div>
 
-            <div className="flex items-center mb-4">
-              <Phone className="h-5 w-5 mr-3 text-primary" />
-              <span>+963 994 074 680</span>
-            </div>
+                <div className="flex items-center">
+                  <Phone className="h-5 w-5 mr-3 text-primary" />
+                  <span className="font-medium">+963 994 074 680</span>
+                </div>
+              </CardContent>
+            </Card>
 
             <div className="flex space-x-4 rtl:space-x-reverse mt-6">
               {socialLinks.map((link, index) => (
@@ -195,105 +189,96 @@ ${formData.message}`
 
           <motion.div variants={item}>
             <h3 className="text-2xl font-bold mb-6">{t("contact.form.title")}</h3>
-            <form ref={formRef} className="space-y-4" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="name" className="block mb-2 text-sm">
-                    {t("contact.form.name")}
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder={t("contact.form.namePlaceholder")}
-                    className="bg-gray-800 border-gray-700 focus:border-primary"
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block mb-2 text-sm">
-                    {t("contact.form.email")}
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder={t("contact.form.emailPlaceholder")}
-                    className="bg-gray-800 border-gray-700 focus:border-primary"
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="message" className="block mb-2 text-sm">
-                  {t("contact.form.message")}
-                </label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder={t("contact.form.messagePlaceholder")}
-                  rows={4}
-                  className="bg-gray-800 border-gray-700 focus:border-primary"
-                  required
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              {status.type && (
-                <Alert
-                  className={`${
-                    status.type === "success" ? "bg-green-500/20 text-green-200" : "bg-red-500/20 text-red-200"
-                  } border-none`}
-                >
-                  <div className="flex items-center gap-2">
-                    {status.type === "success" ? (
-                      <CheckCircle className="h-4 w-4" />
-                    ) : (
-                      <AlertCircle className="h-4 w-4" />
-                    )}
-                    <AlertDescription>{status.message}</AlertDescription>
+            <Card className="bg-gray-800 border-gray-700">
+              <CardContent className="p-6">
+                <form ref={formRef} className="space-y-4" onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="name" className="block mb-2 text-sm">
+                        {t("contact.form.name")}
+                      </label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder={t("contact.form.namePlaceholder")}
+                        className="bg-gray-700 border-gray-600 focus:border-primary"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block mb-2 text-sm">
+                        {t("contact.form.email")}
+                      </label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder={t("contact.form.emailPlaceholder")}
+                        className="bg-gray-700 border-gray-600 focus:border-primary"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
                   </div>
-                </Alert>
-              )}
+                  <div>
+                    <label htmlFor="message" className="block mb-2 text-sm">
+                      {t("contact.form.message")}
+                    </label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder={t("contact.form.messagePlaceholder")}
+                      rows={4}
+                      className="bg-gray-700 border-gray-600 focus:border-primary"
+                      required
+                      disabled={isSubmitting}
+                    />
+                  </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  type="submit"
-                  className="flex-1 gap-2 bg-primary hover:bg-primary/90 rounded-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      {t("contact.form.sending") || "Sending..."}
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4" />
-                      {t("contact.form.submit")}
-                    </>
+                  {status.type && (
+                    <Alert
+                      className={`${
+                        status.type === "success" ? "bg-green-500/20 text-green-200" : "bg-red-500/20 text-red-200"
+                      } border-none`}
+                    >
+                      <div className="flex items-center gap-2">
+                        {status.type === "success" ? (
+                          <CheckCircle className="h-4 w-4" />
+                        ) : (
+                          <AlertCircle className="h-4 w-4" />
+                        )}
+                        <AlertDescription>{status.message}</AlertDescription>
+                      </div>
+                    </Alert>
                   )}
-                </Button>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="gap-2 border-gray-700 hover:border-primary hover:bg-primary/10 rounded-full"
-                  onClick={handleDirectEmail}
-                >
-                  <Mail className="h-4 w-4" />
-                  {t("contact.form.directEmail") || "Send via Email"}
-                </Button>
-
-              </div>
-            </form>
+                  <Button
+                    type="submit"
+                    className="w-full gap-2 bg-primary hover:bg-primary/90 rounded-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        {t("contact.form.sending") || "Sending..."}
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" />
+                        {t("contact.form.submit")}
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </motion.div>
         </motion.div>
 
